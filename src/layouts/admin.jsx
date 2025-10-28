@@ -1,6 +1,21 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
 
 export default function AdminLayout() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // eslint-disable-next-line no-undef
+    initFlowbite();
+  }, []);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
   return (
     <>
       <div className="antialiased bg-gray-50 dark:bg-gray-900">
@@ -92,7 +107,7 @@ export default function AdminLayout() {
                   alt="user photo"
                 />
               </button>
-              {/* <!-- Dropdown menu --> */}
+
               <div
                 className="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
                 id="dropdown"
@@ -110,20 +125,19 @@ export default function AdminLayout() {
                   aria-labelledby="dropdown"
                 >
                   <li>
-                    <Link
-                      to="#"
+                    <a
+                      href="#"
+                      onClick={handleLogout}
                       className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
                       Sign out
-                    </Link>
+                    </a>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
         </nav>
-
-        {/* <!-- Sidebar --> */}
 
         <aside
           className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
@@ -218,7 +232,7 @@ export default function AdminLayout() {
               </li>
             </ul>
 
-            <ul className="pt-5 mt-5 space-y-2 borderT border-gray-200 dark:border-gray-700">
+            <ul className="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
               <li>
                 <Link
                   to="/admin/books"
@@ -282,6 +296,30 @@ export default function AdminLayout() {
                   </svg>
                   <span className="ml-3">Help</span>
                 </Link>
+              </li>
+
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group w-full"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    strokeWidth="1.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m-3-6l-3 3m0 0 3 3m-3-3h12.75"
+                    />
+                  </svg>
+                  <span className="ml-3">Sign Out</span>
+                </button>
               </li>
             </ul>
           </div>
