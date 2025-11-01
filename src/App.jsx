@@ -1,10 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// Layouts
 import PublicLayout from "./layouts/public";
 import AdminLayout from "./layouts/admin";
 
-// Pages
 import Home from "./pages/public";
 import Books from "./pages/public/books";
 import ShowBook from "./pages/public/books/show";
@@ -21,7 +19,6 @@ import AuthorEdit from "./pages/admin/authors/edit";
 import GenreEdit from "./pages/admin/genres/edit";
 import AdminTransactions from "./pages/admin/transactions";
 
-// Import komponen proteksi dari folder components
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 
@@ -30,20 +27,12 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          {/* =================================
-            PUBLIC ROUTES
-            =================================
-          */}
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<Home />} />
             <Route path="books" element={<Books />} />
             <Route path="books/:id" element={<ShowBook />} />
           </Route>
 
-          {/* =================================
-            GUEST ROUTES (Hanya untuk yang Belum Login)
-            =================================
-          */}
           <Route
             path="login"
             element={
@@ -61,10 +50,6 @@ function App() {
             }
           />
 
-          {/* =================================
-            ADMIN ROUTES (Hanya untuk Role 'admin')
-            =================================
-          */}
           <Route
             path="admin"
             element={

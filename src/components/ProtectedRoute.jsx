@@ -1,5 +1,4 @@
 import { Navigate, useLocation } from "react-router-dom";
-// Path import diperbaiki untuk menunjuk ke folder _services
 import { isLoggedIn, isAdmin } from "../_services/auth";
 
 const ProtectedRoute = ({ children, role }) => {

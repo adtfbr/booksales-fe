@@ -1,5 +1,4 @@
 import { Navigate } from "react-router-dom";
-// Path import diperbaiki untuk menunjuk ke folder _services
 import { isLoggedIn, isAdmin } from "../_services/auth";
 
 const GuestRoute = ({ children }) => {
