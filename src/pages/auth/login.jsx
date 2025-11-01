@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import API from "../../_api";
 
 export default function Login() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -27,18 +26,29 @@ export default function Login() {
 
     try {
       const response = await API.post("/login", formData);
-      const { token, user } = response.data;
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      console.log("Respons server:", response.data);
 
-      console.log("Login berhasil:", response.data);
+      const { access_token, user } = response.data;
 
-      navigate("/admin"); 
+      if (access_token && user) {
+        localStorage.setItem("token", access_token);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        console.log("Login berhasil:", user.name);
+
+        if (user.role === 'admin') {
+          window.location.href = "/admin";
+        } else {
+          window.location.href = "/";
+        }
+      } else {
+        throw new Error(response.data.message || "Data login tidak lengkap dari server.");
+      }
 
     } catch (error) {
-      console.error("Login gagal:", error.response?.data || error.message);
-      setErrors(error.response?.data?.message || "Email atau password salah.");
+      console.error("Login gagal:", error.message);
+      setErrors(error.response?.data?.message || error.message || "Email atau password salah.");
     } finally {
       setLoading(false);
     }
