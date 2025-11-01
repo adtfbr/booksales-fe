@@ -1,6 +1,26 @@
-
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { isLoggedIn, getUser } from "../_services/auth";
+
 export default function Navbar() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      setCurrentUser(getUser());
+    }
+    
+    // eslint-disable-next-line no-undef
+    initFlowbite();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setCurrentUser(null);
+    window.location.href = "/";
+  };
+
   return (
     <>
       <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
@@ -17,21 +37,34 @@ export default function Navbar() {
           </Link>
           <div className="flex items-center lg:order-2">
             
-            {/* Tombol Masuk */}
-            <Link
-              to="/login"
-              className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
-            >
-              Masuk
-            </Link>
-
-            {/* Tombol Bergabung */}
-            <Link
-              to="/register"
-              className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800"
-            >
-              Bergabung
-            </Link>
+            {currentUser ? (
+              <>
+                <span className="text-gray-800 dark:text-white font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2">
+                  Halo, {currentUser.name}!
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-red-500 dark:hover:bg-red-600 focus:outline-none dark:focus:ring-red-800"
+                >
+                  Keluar
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                >
+                  Masuk
+                </Link>
+                <Link
+                  to="/register"
+                  className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800"
+                >
+                  Bergabung
+                </Link>
+              </>
+            )}
 
             <button
               data-collapse-toggle="mobile-menu-2"
